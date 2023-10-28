@@ -41,7 +41,7 @@ jobs:
         version_parts=()
         while IFS= read -r -d ' ' item; do
           version_parts+=("$item")
-        done << (echo $latest_version | tr '.' ' ')
+        done < <(echo $latest_version | tr '.' ' ')
         echo "Array: ${version_parts}"
         major="${version_parts[0]}"
         echo "${major}"
