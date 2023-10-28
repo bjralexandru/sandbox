@@ -38,7 +38,9 @@ jobs:
       run: |
         echo "Latest version: ${LATEST_VERSION}"
         IFS='.' read -ra my_array <<< "${LATEST_VERSION}"
-        echo "Array: $my_array"
+        for item in "${my_array[@]}"; do
+          echo "$item"
+        done
       continue-on-error: true
 
 
