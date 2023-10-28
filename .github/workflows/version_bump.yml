@@ -38,37 +38,18 @@ jobs:
       run: |
         echo "Latest version: ${LATEST_VERSION}"
         IFS='.' read -ra my_array <<< "${LATEST_VERSION}"
+        
         major="${my_array[0]}"
         minor="${my_array[1]}"
         patch="${my_array[2]}"
         config="${my_array[3]}"
 
-        case $release_type in
-          "major")
-            major=$((major + 1))
-            minor=0
-            patch=0
-            config=0
-            ;;
-          "minor")
-            minor=$((minor + 1))
-            patch=0
-            config=0
-            ;;
-          "patch")
-            patch=$((patch + 1))
-            config=0
-            ;;
-          "config")
-            config=$((config + 1))
-            ;;
-          *)
-            echo "Invalid release_type: $release_type"
-            exit 1
-            ;;
-        esac
+        echo "Major: ${major}"
+        echo "Config: ${config}"
 
-        new_version="$major.$minor.$patch.$config"
+        
+
+        
         echo "New version: $new_version"
       continue-on-error: true
 
