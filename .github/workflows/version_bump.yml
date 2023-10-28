@@ -25,8 +25,13 @@ jobs:
     - name: Get Latest Version
       id: latest_version
       run: |
-        git tag -l 
+        release="${GITHUB_REF#refs/heads/release/}"
+        git fetch --tags  # Fetch all tags from the remote repository
+        latest_version=$(git tag --list --sort=-v:refname | head -n 1)
+        echo "Latest version: $latest_version"
+        echo "::set-output name=latest_version::$latest_version"
       continue-on-error: true
+
     
       
    
