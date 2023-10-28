@@ -45,10 +45,10 @@ jobs:
         config="${version_parts[3]}"
 
         # Convert component strings to integers
-        major=$((10#$major))
-        minor=$((10#$minor))
-        patch=$((10#$patch))
-        config=$((10#$config))
+        major=$((major))
+        minor=$((minor))
+        patch=$((patch))
+        config=$((config))
 
         case $release_type in
           "major")
