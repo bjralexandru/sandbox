@@ -1,0 +1,92 @@
+name: Auto-increment Version Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release Type (major, minor, patch, config)'
+        required: true
+        default: 'config'
+
+jobs:
+  bump_version:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Get current tag
+      id: get_current_tag
+      run: |
+        current_tag=$(git describe --tags --abbrev=0)
+        echo "::set-output name=current_tag::$current_tag"
+      continue-on-error: true
+
+    - name: Parse current version
+      id: parse_version
+      run: |
+        current_tag="${{ steps.get_current_tag.outputs.current_tag }}"
+        IFS='.' read -ra version <<< "$current_tag"
+        major="${version[0]}"
+        minor="${version[1]}"
+        patch="${version[2]}"
+        config="${version[3]}"
+        echo "::set-output name=major::$major"
+        echo "::set-output name=minor::$minor"
+        echo "::set-output name=patch::$patch"
+        echo "::set-output name=config::$config"
+      continue-on-error: true
+
+    - name: Determine new version
+      id: determine_version
+      run: |
+        release_type="${{ github.event.inputs.release_type }}"
+        major="${{ steps.parse_version.outputs.major }}"
+        minor="${{ steps.parse_version.outputs.minor }}"
+        patch="${{ steps.parse_version.outputs.patch }}"
+        config="${{ steps.parse_version.outputs.config }}"
+        
+        case $release_type in
+          "major")
+            major=$((major + 1))
+            minor=0
+            patch=0
+            config=0
+            ;;
+          "minor")
+            minor=$((minor + 1))
+            patch=0
+            config=0
+            ;;
+          "patch")
+            patch=$((patch + 1))
+            config=0
+            ;;
+          "config")
+            config=$((config + 1))
+            ;;
+          *)
+            echo "Invalid release_type: $release_type"
+            exit 1
+            ;;
+        esac
+        
+        new_version="$major.$minor.$patch.$config"
+        echo "::set-output name=new_version::$new_version"
+      continue-on-error: true
+
+    - name: Create new tag
+      id: create_new_tag
+      run: |
+        new_version="${{ steps.determine_version.outputs.new_version }}"
+        git tag "$new_version"
+        echo "::set-output name=new_tag::$new_version"
+      continue-on-error: true
+
+    - name: Push new tag
+      if: success()
+      run: |
+        new_tag="${{ steps.create_new_tag.outputs.new_tag }}"
+        git push origin "$new_tag"
+      continue-on-error: true
