@@ -27,7 +27,7 @@ jobs:
       run: |
         release="${GITHUB_REF#refs/heads/release/}"
         git fetch --tags  # Fetch all tags from the remote repository
-        latest_version=$(git tag --list --sort=-v:refname | head -n 1)
+        latest_version=$(git tag --list --sort=-v:refname | head -n 1) >> $GITHUB_ENV
         echo "Latest version: $latest_version"
       continue-on-error: true
 
@@ -35,8 +35,8 @@ jobs:
       id: determine_version
       shell: bash
       run: |
-        echo "Latest version: $latest_version"
-        IFS='.' read -ra my_array <<< "$latest_version"
+        echo "Latest version: ${{ env.latest_version }}"
+        IFS='.' read -ra my_array <<< "${{ env.latest_version }}"
         echo "Array: $my_array"
       continue-on-error: true
 
