@@ -54,6 +54,21 @@ jobs:
         echo "Config: ${config}"
 
         case ${{inputs.release_type}} in
+          "major")
+            ((major++))
+            minor=0
+            patch=0
+            config=0
+            ;;
+          "minor")
+            ((minor++))
+            patch=0
+            config=0
+            ;;
+          "patch")
+            ((patch++))
+            config=0
+            ;;
           "config")
             ((config++))
             ;;
