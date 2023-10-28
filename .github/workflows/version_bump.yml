@@ -47,7 +47,7 @@ jobs:
         echo "Major: ${major}"
         echo "Config: ${config}"
 
-        case ${inputs.release_type} in
+        case ${{inputs.release_type}} in
           "config")
             config=${config} + 1
             ;;
