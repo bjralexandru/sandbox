@@ -4,9 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       release_type:
-        description: 'Release Type (major, minor, patch, config)'
+        description: 'Release Type'
         required: true
         default: 'config'
+        options: ['major', 'minor', 'patch', 'config']
 
 jobs:
   bump_version:
@@ -19,33 +20,33 @@ jobs:
     - name: Get current tag
       id: get_current_tag
       run: |
-        current_tag=$(git describe --tags --abbrev=0)
-        echo "::set-output name=current_tag::$current_tag"
+        current_tag=${GITHUB_REF#refs/tags/}
+        echo "CURRENT_TAG=${current_tag}" >> $GITHUB_ENV
       continue-on-error: true
 
     - name: Parse current version
       id: parse_version
       run: |
-        current_tag="${{ steps.get_current_tag.outputs.current_tag }}"
+        current_tag="${CURRENT_TAG}"
         IFS='.' read -ra version <<< "$current_tag"
         major="${version[0]}"
         minor="${version[1]}"
         patch="${version[2]}"
         config="${version[3]}"
-        echo "::set-output name=major::$major"
-        echo "::set-output name=minor::$minor"
-        echo "::set-output name=patch::$patch"
-        echo "::set-output name=config::$config"
+        echo "MAJOR=${major}" >> $GITHUB_ENV
+        echo "MINOR=${minor}" >> $GITHUB_ENV
+        echo "PATCH=${patch}" >> $GITHUB_ENV
+        echo "CONFIG=${config}" >> $GITHUB_ENV
       continue-on-error: true
 
     - name: Determine new version
       id: determine_version
       run: |
         release_type="${{ github.event.inputs.release_type }}"
-        major="${{ steps.parse_version.outputs.major }}"
-        minor="${{ steps.parse_version.outputs.minor }}"
-        patch="${{ steps.parse_version.outputs.patch }}"
-        config="${{ steps.parse_version.outputs.config }}"
+        major="${MAJOR}"
+        minor="${MINOR}"
+        patch="${PATCH}"
+        config="${CONFIG}"
         
         case $release_type in
           "major")
@@ -73,20 +74,21 @@ jobs:
         esac
         
         new_version="$major.$minor.$patch.$config"
-        echo "::set-output name=new_version::$new_version"
+        echo "NEW_VERSION=${new_version}" >> $GITHUB_ENV
       continue-on-error: true
 
     - name: Create new tag
       id: create_new_tag
       run: |
-        new_version="${{ steps.determine_version.outputs.new_version }}"
+        new_version="${NEW_VERSION}"
         git tag "$new_version"
-        echo "::set-output name=new_tag::$new_version"
+        echo "NEW_TAG=${new_version}" >> $GITHUB_ENV
       continue-on-error: true
 
     - name: Push new tag
       if: success()
       run: |
-        new_tag="${{ steps.create_new_tag.outputs.new_tag }}"
+        new_tag="${NEW_TAG}"
         git push origin "$new_tag"
       continue-on-error: true
+
