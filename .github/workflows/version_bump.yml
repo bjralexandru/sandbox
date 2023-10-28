@@ -33,35 +33,10 @@ jobs:
 
     - name: Determine New Version
       id: determine_version
+      shell: bash
       run: |
-        release_type="${{ github.event.inputs.release_type }}"
-        latest_version="${latest_version}"
-
-        # Split the latest version into its components
-        version_parts=()
-        while IFS= read -r -d ' ' item; do
-          version_parts+=("$item")
-        done < <(echo $latest_version | tr '.' ' ')
-        echo "Array: ${version_parts}"
-        major="${version_parts[0]}"
-        echo "${major}"
-        minor="${version_parts[1]}"
-        patch="${version_parts[2]}"
-        config="${version_parts[3]}"
-
-        # Convert component strings to integers
-        major=$((major))
-        minor=$((minor))
-        patch=$((patch))
-        config=$((config))
-
-        echo "major = ${major}"
-        echo "minor = ${minor}"
-        echo "patch = ${patch}"
-        echo "config = ${config}"
-        
-
-    
+        IFS='.' read -ra my_array <<< "$latest_version"
+        echo "Array: $my_array"
       continue-on-error: true
 
 
