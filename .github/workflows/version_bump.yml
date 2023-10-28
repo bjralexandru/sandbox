@@ -35,6 +35,7 @@ jobs:
       id: determine_version
       shell: bash
       run: |
+        echo "Latest version: $latest_version""
         IFS='.' read -ra my_array <<< "$latest_version"
         echo "Array: $my_array"
       continue-on-error: true
