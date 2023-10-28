@@ -55,7 +55,7 @@ jobs:
 
         case ${{inputs.release_type}} in
           "config")
-            config=${config} + 1
+            ((config++))
             ;;
           *)
             echo "Not applicable"
