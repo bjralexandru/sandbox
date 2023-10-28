@@ -50,6 +50,12 @@ jobs:
         patch=$((patch))
         config=$((config))
 
+        echo "major = ${major}"
+        echo "minor = ${minor}"
+        echo "patch = ${patch}"
+        echo "config = ${config}"
+        
+
         case $release_type in
           "major")
             major=$((major + 1))
@@ -67,7 +73,7 @@ jobs:
             config=0
             ;;
           "config")
-            config=$((config + 1))
+            config=${config} + 1
             ;;
           *)
             echo "Invalid release_type: $release_type"
