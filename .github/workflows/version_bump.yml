@@ -5,9 +5,14 @@ on:
     inputs:
       release_type:
         description: 'Release Type'
+        type: choice
         required: true
         default: 'config'
-        options: ['major', 'minor', 'patch', 'config']
+        options: 
+          - 'major'
+          - 'minor'
+          - 'patch'
+          - 'config'
 
 jobs:
   bump_version:
