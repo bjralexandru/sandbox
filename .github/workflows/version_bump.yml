@@ -44,6 +44,12 @@ jobs:
         patch="${my_array[2]}"
         config="${my_array[3]}"
 
+        # Convert component strings to integers
+        major=$((major))
+        minor=$((minor))
+        patch=$((patch))
+        config=$((config))
+
         echo "Major: ${major}"
         echo "Config: ${config}"
 
