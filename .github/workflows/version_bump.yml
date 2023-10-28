@@ -24,6 +24,7 @@ jobs:
 
     - name: Get current tag
       id: get_current_tag
+      shell: bash
       run: |
         release="${GITHUB_REF#refs/heads/release/}"
         latest_version=$(git tag -l)
