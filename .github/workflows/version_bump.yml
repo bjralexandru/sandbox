@@ -38,7 +38,7 @@ jobs:
         latest_version="${latest_version}"
 
         # Split the latest version into its components
-        IFS='.' read -ra version_parts <<< "$latest_version"
+        version_parts=($(echo "$latest_version" | tr '.' ' '))
         echo "Array: ${version_parts}"
         major="${version_parts[0]}"
         echo "${major}"
