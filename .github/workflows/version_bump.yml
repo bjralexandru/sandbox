@@ -36,14 +36,14 @@ jobs:
       run: |
         release_type="${{ github.event.inputs.release_type }}"
         latest_version="${latest_version}"
-    
+
         # Split the latest version into its components
         IFS='.' read -ra version_parts <<< "$latest_version"
         major="${version_parts[0]}"
         minor="${version_parts[1]}"
         patch="${version_parts[2]}"
         config="${version_parts[3]}"
-    
+
         case $release_type in
           "major")
             major=$((major + 1))
@@ -61,23 +61,24 @@ jobs:
             config=0
             ;;
           "config")
-            config=$((config + 1)
+            config=$((config + 1))
             ;;
           *)
             echo "Invalid release_type: $release_type"
             exit 1
             ;;
         esac
-    
+
         # Pad components to always have four digits
         major=$(printf "%04d" $major)
         minor=$(printf "%04d" $minor)
         patch=$(printf "%04d" $patch)
         config=$(printf "%04d" $config)
-    
+
         new_version="$major.$minor.$patch.$config"
         echo "New version: $new_version"
       continue-on-error: true
+
 
 
 
