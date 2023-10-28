@@ -25,10 +25,7 @@ jobs:
     - name: Get Latest Version
       id: latest_version
       run: |
-        release="${GITHUB_REF#refs/heads/release/}"
-        latest_version=$(git tag --sort=v:refname | tail -n 1)
-        echo "Latest version: $latest_version"
-        echo "::set-output name=latest_version::$latest_version"
+        git tag -l 
       continue-on-error: true
     
       
