@@ -26,74 +26,7 @@ jobs:
       id: get_current_tag
       run: |
         current_tag="${GITHUB_REF#refs/heads/release/}"
-        echo "CURRENT_TAG=${current_tag}" >> $GITHUB_ENV
-      continue-on-error: true
-
-    - name: Parse current version
-      id: parse_version
-      run: |
-        current_tag="${CURRENT_TAG}"
-        IFS='.' read -ra version <<< "$current_tag"
-        major="${version[0]}"
-        minor="${version[1]}"
-        patch="${version[2]}"
-        config="${version[3]}"
-        echo "MAJOR=${major}" >> $GITHUB_ENV
-        echo "MINOR=${minor}" >> $GITHUB_ENV
-        echo "PATCH=${patch}" >> $GITHUB_ENV
-        echo "CONFIG=${config}" >> $GITHUB_ENV
-      continue-on-error: true
-
-    - name: Determine new version
-      id: determine_version
-      run: |
-        release_type="${{ github.event.inputs.release_type }}"
-        major="${MAJOR}"
-        minor="${MINOR}"
-        patch="${PATCH}"
-        config="${CONFIG}"
-        
-        case $release_type in
-          "major")
-            major=$((major + 1))
-            minor=0
-            patch=0
-            config=0
-            ;;
-          "minor")
-            minor=$((minor + 1))
-            patch=0
-            config=0
-            ;;
-          "patch")
-            patch=$((patch + 1))
-            config=0
-            ;;
-          "config")
-            config=$((config + 1))
-            ;;
-          *)
-            echo "Invalid release_type: $release_type"
-            exit 1
-            ;;
-        esac
-        
-        new_version="$major.$minor.$patch.$config"
-        echo "NEW_VERSION=${new_version}" >> $GITHUB_ENV
-      continue-on-error: true
-
-    - name: Create new tag
-      id: create_new_tag
-      run: |
-        new_version="${NEW_VERSION}"
-        git tag "$new_version"
-        echo "NEW_TAG=${new_version}" >> $GITHUB_ENV
-      continue-on-error: true
-
-    - name: Push new tag
-      if: success()
-      run: |
-        new_tag="${NEW_TAG}"
-        git push origin "$new_tag"
-      continue-on-error: true
+        echo RELEASE:${current_tag}
+      
+   
 
