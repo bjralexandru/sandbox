@@ -76,6 +76,7 @@ jobs:
             echo "Not applicable"
             ;;
         esac
+
         new_version="${major}.${minor}.${patch}.${config}"        
         echo "New version: $new_version"
       continue-on-error: true
