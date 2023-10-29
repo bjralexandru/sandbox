@@ -79,6 +79,17 @@ jobs:
         echo "New version: $new_version"
       continue-on-error: true
 
+    - name: Update Git Release Tag
+      run: |
+          # Set the GitHub token for authentication
+          GITHUB_TOKEN=${{ secrets.TOKEN }}
+          NEW_VERSION=$GITHUB_REF/refs/tags/v${{ steps.determine_version.outputs.new_version }}
+          # Create a new release using GitHub REST API
+          curl -X POST "https://api.github.com/repos/${{ github.repository }}/releases" -H "Authorization: token $GITHUB_TOKEN" -d "{\"tag_name\": \"$NEW_VERSION\"}"
+      env:
+        NEW_VERSION: ${{ steps.determine_version.outputs.new_version }}
+      continue-on-error: true
+
 
 
 
