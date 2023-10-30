@@ -27,7 +27,7 @@ jobs:
     
     - name: Get the release type
       id: extraction
-      uses: sandbox/.github/actions/name@RELEASE_dbc_dev
+      uses: sandbox/.github/actions/name@feature
 
 
     - name: Debug name 
