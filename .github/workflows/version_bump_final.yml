@@ -27,7 +27,7 @@ jobs:
     
     - name: Get the release type
       id: extraction
-      uses: ./actions/name@feature
+      uses: ./.github/actions/name@feature
 
 
     - name: Debug name 
