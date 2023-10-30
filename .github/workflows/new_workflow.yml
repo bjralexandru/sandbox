@@ -1,7 +1,9 @@
 name: Main Workflow
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   prompt-user-input:
@@ -10,7 +12,8 @@ jobs:
     steps:
       - name: Prompt User Input
         id: prompt
-        run: echo "::set-output name=user_choice::$(read -p 'Choose an option (A/B): ' choice && echo $choice)"
+        run: |
+          echo "##[set-output name=user_choice;isString=true]$(read -p 'Choose an option (A/B): ' choice && echo $choice)"
         shell: bash
 
       - name: Display User's Choice
