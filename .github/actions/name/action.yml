@@ -1,4 +1,5 @@
 name: Extract Release Type
+description: Tralala
 
 outputs:
   RELEASE_TYPE:
