@@ -19,9 +19,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
     - name: Get Latest Version
       id: latest_version
       run: |
@@ -90,7 +87,7 @@ jobs:
         curl -k -X POST \
           -H "Accept: application/vnd.github.v3+json" \
           -H "Authorization: token ${{secrets.TOKEN}}" \
-          https://api.github.com/repos/${GITHUB_REPO}/git/refs \
+          https://api.github.com/repos/${GITHUB_REPOSITORY}/git/refs \
           -d '{"ref":"refs/tags/'"${NEW_VERSION}"'","sha":"'"${{github.sha}}"'"}' 
 
 
