@@ -2,17 +2,6 @@ name: Auto-increment Version Tag
 
 on:
   workflow_dispatch:
-    inputs:
-      release_type:
-        description: 'Release Type'
-        type: choice
-        required: true
-        default: 'config'
-        options: 
-          - 'major'
-          - 'minor'
-          - 'patch'
-          - 'config'
 
 jobs:
   bump_version:
@@ -31,6 +20,16 @@ jobs:
         echo "LATEST_VERSION=$latest_version" >> $GITHUB_ENV
         echo "Latest version: $latest_version"
       continue-on-error: true
+    
+    - name: Get the release type
+      id: extraction
+      uses: sandbox/.github/actions/name@main
+
+    - name: Debug name 
+      shell: bash
+      run: |-
+        echo "Release Tag cant be extracted or is missing"
+        exit 1
 
     - name: Determine New Version
       id: determine_version
