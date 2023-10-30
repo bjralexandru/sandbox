@@ -81,8 +81,8 @@ jobs:
 
     - name: Update Git Release Tag
       run: |
-        NEW_VERSION=$GITHUB_REF/refs/tags/v${{ steps.determine_version.outputs.new_version }}
-        echo "New version: $NEW_VERSION"
+        NEW_VERSION=${{env.NEW_VERSION}}
+        echo "New version: ${{env.NEW_VERSION}}"
         GITHUB_OWNER=${{ github.repository_owner }}
         GITHUB_REPO=${{ github.event.repository.name }}
     
