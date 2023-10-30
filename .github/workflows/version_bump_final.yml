@@ -92,8 +92,7 @@ jobs:
           -H "Authorization: token $TOKEN" \
           https://api.github.com/repos/${GITHUB_REPO}/git/refs \
           -d '{"ref":"refs/tags/'"${NEW_VERSION}"'","sha":"'"${{inputs.sha}}"'"}' 
-      env:
-        NEW_VERSION: ${{ steps.determine_version.outputs.new_version }}
+
 
 
 
