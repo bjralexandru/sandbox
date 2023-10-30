@@ -32,6 +32,7 @@ jobs:
 
     - name: Debug name 
       shell: bash
+      if: ${{steps.extraction.outputs.RELEASE_TYPE == ''}}
       run: |-
         echo "Release Tag cant be extracted or is missing"
         exit 1
