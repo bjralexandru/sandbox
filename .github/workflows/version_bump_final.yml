@@ -55,7 +55,7 @@ jobs:
         patch=$((patch))
         config=$((config))
 
-        case ${{inputs.release_type}} in
+        case ${release_type} in
           "major")
             major=$((major+1))
             minor=0
@@ -82,7 +82,8 @@ jobs:
         new_version="${major}.${minor}.${patch}.${config}"
         echo "NEW_VERSION=$new_version" >> $GITHUB_ENV       
         echo "New version: $new_version"
-      continue-on-error: true
+      env:
+        release_type: ${{steps.extraction.outputs.RELEASE_TYPE}}
 
     - name: Update Git Release Tag
       run: |-
