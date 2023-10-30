@@ -17,7 +17,7 @@ runs:
           # Extract the merge message from the commit
           MERGE_MESSAGE=$(git log --format=%B -n 1 $LAST_MERGE_COMMIT_SHA)
           # Use regular expressions to extract the release type
-          RELEASE_TYPE=$(echo "$MERGE_MESSAGE" | grep -o 'Release type: \(\w*\)' | sed -e 's/Release type: *//' -e 's/^ *//' -e 's/ *$')
+          RELEASE_TYPE=$(echo "$MERGE_MESSAGE" | grep -oi 'Release type: \(\w*\)' | sed -e 's/[Rr]elease type: *//' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$')
           echo "Release Type: $RELEASE_TYPE"
           # Set the release type as an environment variable
           echo "RELEASE_TYPE=$RELEASE_TYPE" >> $GITHUB_OUTPUT
