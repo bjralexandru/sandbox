@@ -8,7 +8,7 @@ on:
 jobs:
   extract-release-type:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && github.event.pull_request.approved == true
+    if: ${{github.event.pull_request.merged == true}}
 
     steps:
       - name: Checkout Repository
